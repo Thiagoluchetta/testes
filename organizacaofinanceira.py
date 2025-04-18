@@ -20,9 +20,9 @@ def adicionar_gastos():
         gastos.append(gasto)
         print('\nGasto Adicionado com Sucesso!')
         print("-" * 30)
-        print(f'Descrição : {gastos[0]["descricao"]}')
-        print(f'Categoria : {gastos[0]["categoria"]}')
-        print(f'Valor : R$ {gastos[0]["valor"]:.2f}')
+        print(f'Descrição : {gasto["descrição"]}')
+        print(f'Categoria : {gasto["categoria"]}')
+        print(f'Valor : R$ {gasto["valor"]:.2f}')
         print('-'*30)
         
     except ValueError:

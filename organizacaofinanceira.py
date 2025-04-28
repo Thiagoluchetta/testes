@@ -3,8 +3,30 @@
 #irei adicionar novas funções conformo aprendo, evoluindo o código e trazendo novidades!
 
 #menu inicial
+import json
+
 gastos = []
 receitas = []
+
+def salvar_dados():
+    dados = {
+        'receitas': receitas,
+        'gastos': gastos
+    }
+    with open('dados_financeiros.json', 'w') as arquivo:
+        json.dump(dados, arquivo, indent=4)
+
+def carregar_dados():
+    global receitas, gastos
+    try:
+        with open('dados_financeiros.json', 'r') as arquivo:
+            dados = json.load(arquivo)
+            receitas = dados.get('receitas', [])
+            gastos = dados.get('gastos', [])
+    except FileNotFoundError:
+        receitas = []
+        gastos = []
+
 def listar_gastos():
     if not gastos:
         print("\nNenhuma despesa registrada ainda.")
@@ -31,6 +53,7 @@ def adicionar_receita():
         }
 
         receitas.append(receita)
+        salvar_dados()
         print('Receita adicionada com sucesso!')
         print( '-' * 30)
         print(f'Categoria: {receita['categoria']}')
@@ -54,6 +77,7 @@ def adicionar_gastos():
         }
 
         gastos.append(gasto)
+        salvar_dados()
         print('\nGasto Adicionado com Sucesso!')
         print("-" * 30)
         print(f'Descrição : {gasto["descrição"]}')
@@ -115,4 +139,7 @@ def executando_menu():
         else:
             print('opção inválida')
 
+carregar_dados()
 executando_menu()
+
+

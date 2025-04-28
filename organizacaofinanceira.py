@@ -4,6 +4,7 @@
 
 #menu inicial
 gastos = []
+receitas = []
 def listar_gastos():
     if not gastos:
         print("\nNenhuma despesa registrada ainda.")
@@ -18,6 +19,26 @@ def listar_gastos():
         print(f'Valor     : R$ {gasto["valor"]:.2f}')
     print("-" * 30)
 
+def adicionar_receita():
+    print('----adicionar receitas----')
+    try:
+        valorR = float(input('Qual o valor da receita?'))
+        categoriaR = input('Qual a descrição da receita?')
+
+        receita = {
+            'valor' : valorR,
+            'categoria' : categoriaR,
+        }
+
+        receitas.append(receita)
+        print('Receita adicionada com sucesso!')
+        print( '-' * 30)
+        print(f'Categoria: {receita['categoria']}')
+        print(f'Valor : R$ {receita["valor"]:.2f}')
+        print('-'*30)
+
+    except ValueError:
+        print('Digite um número válido!')
 
 def adicionar_gastos():
     print("=== Adicionar Gastos ===")
@@ -43,14 +64,31 @@ def adicionar_gastos():
     except ValueError:
         print("Digite um número válido")
 
+def limpar_operações():
+    print('tem certeza que deseja apagar as informações?')
+    confirmar = input('Digite S para apagar ou N para cancelar!').strip().upper()
+
+    if confirmar == 'S':
+        gastos.clear()
+        receitas.clear()
+    else:
+        print('Nenhum dado foi apagado!')
+
+def soma():
+    total_receita = sum(receita['valor'] for receita in receitas)
+    total_gastos = sum(gasto['valor'] for gasto in gastos)
+
+    soma_financeira = total_receita - total_gastos
+    print(f'Saldo em conta {soma_financeira:.2f}!')
 
 def mostrar_menu():
     print('\n=====Organizador financeiro=====')
     print('1.Adicionar despesa.')
     print('2.Adicionar receita.')
-    print('3.Mostrar gastos.')
+    print('3.listar gastos.')
     print('4.Limpar operações')
-    print('5.Sair')
+    print('5. Soma financeira.')
+    print('6.Sair')
 
 def executando_menu():
     while True:
@@ -64,12 +102,14 @@ def executando_menu():
         if opcao == 1:
             adicionar_gastos()
         elif opcao == 2:
-            print('2')
+            adicionar_receita()
         elif opcao == 3:
             listar_gastos()
         elif opcao == 4:
-            print('4')
+            limpar_operações()
         elif opcao == 5:
+            soma()
+        elif opcao == 6:
             print('saindo')
             break
         else:

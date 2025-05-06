@@ -44,7 +44,7 @@ def capturar_resultadosPos2():
         print(f'Valores de foodatached armazenados: {foodatached}')
 
         IPTC = []
-        for i in range(1,2):
+        for i in range(1,3):
             entrada = input(f'Digite a {i} entrada de IPTC da Pos2:')
             IPTC.append(int(entrada))
         ResultadosPos2['IPTC'] = IPTC
@@ -55,49 +55,29 @@ def capturar_resultadosPos2():
 
 def calcular_TM():
     try:
-        # Soma de foodatached
-        diferenca_foodatachedPos1 = sum(ResultadosPos1['foodatached'])
-        diferenca_foodatachedPos2 = sum(ResultadosPos2['foodatached'])
-        ResultadosPos1['foodatachedsomado'] = diferenca_foodatachedPos1
-        ResultadosPos2['foodatachedsomado'] = diferenca_foodatachedPos2
+        Vendas = ResultadosPos1['Vendas'] + ResultadosPos2['Vendas']
+        Clientes = ResultadosPos1['Clientes'] + ResultadosPos2['Clientes']
+        Agregados = ResultadosPos1['Agregados'] + ResultadosPos2['Agregados']
+        foodatached = sum(ResultadosPos1['foodatached']) + sum(ResultadosPos2['foodatached'])
+        IPTCpos1 = ResultadosPos1['IPTC'][0] - ResultadosPos1['IPTC'][1]
+        IPTCpos2 = ResultadosPos2['IPTC'][0] - ResultadosPos2['IPTC'][1]
 
-        # Soma de IPTC
-        iptcpos1 = sum(ResultadosPos1['IPTC'])
-        iptcpos2 = sum(ResultadosPos2['IPTC'])
-        ResultadosPos1['IPTCsomado'] = iptcpos1
-        ResultadosPos2['IPTCsomado'] = iptcpos2
+    # Cálculo dos resultados
+        TM = Vendas / Clientes
+        TC = Clientes
+        Agregados = Agregados / Vendas * 100
+        FA = foodatached / TC
+        IPTC = TC / (IPTCpos1 + IPTCpos2)  
 
-        # Loop para calcular resultados
-        for pos, resultados in zip(['Pos1', 'Pos2'], [ResultadosPos1, ResultadosPos2]):
-            Vendas = resultados['Vendas']
-            Clientes = resultados['Clientes']
-            Agregados = resultados['Agregados']
-            PC = ResultadosPos1['PC'] + ResultadosPos2['PC']
-            foodatached = ResultadosPos1['foodatachedsomado'] + ResultadosPos2['foodatachedsomado']
-
-            # Verificar divisão por zero
-            if Clientes == 0:
-                print(f"Erro: O número de clientes na {pos} não pode ser zero.")
-                return
-
-            # Cálculo do TM
-            TM = Vendas / Clientes
-            TC = Clientes
-            Agregados = Agregados / Vendas * 100
-            FA = foodatached / TC
-            IPTC = iptcpos1 - iptcpos2
-
-            # Exibição dos resultados
-            print('-' * 30)
-            print(f"\nResultados da {pos}:"
-                  f"\nVendas: R$ {Vendas:.2f}"
-                  f"\nTC: {Clientes}"
-                  f"\nTM: {TM:.2f}"
-                  f"\nAgregados: {Agregados:.1f} %"
-                  f"\nFA: {FA:.2f} %"
-                  f"\nIPTC: {IPTC:.2f}"
-                  f"\nPC: {PC}")
-            print("-" * 30)
+        print('-' * 30)
+        print(f"\nResultados:"
+          f"\nVendas: R$ {Vendas:.2f}"
+          f"\nTC: {Clientes}"
+          f"\nTM: {TM:.2f}"
+          f"\nAgregados: {Agregados:.1f} %"
+          f"\nFA: {FA} %"
+          f"\nIPTC: {IPTC:.2f}")
+        print("-" * 30)
     except Exception as e:
         print(f"Ocorreu um erro inesperado: {e}")
 
